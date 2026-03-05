@@ -1,10 +1,3 @@
-
-
-
-// import { User } from "@user/domain/user.entity";
-// import { UserRepository } from "@user/domain/user.repository";
-// import { Email } from "@user/domain/value-objects/user-email.vo";
-// import { PrismaService } from "@infrastructure/prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { UserRepository } from "../domain/user.repository";
@@ -12,7 +5,6 @@ import { PrismaService } from "src/core/infrastructure/prisma/prisma.service";
 import { User } from "../domain/user.entity";
 import { PaginationMeta } from "src/common/dto/response/response.dto";
 import { Email } from "../domain/value-objects/user-email.vo";
-// import { PaginationMeta } from "@dto/response/response.dto";
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -39,43 +31,43 @@ export class PrismaUserRepository implements UserRepository {
     return record ? this.toDomain(record) : null;
   }
 
-  // async save(user: User, tx?: Prisma.TransactionClient): Promise<User> {
-  //   const data = user.toPrimitives();
-  //   const record = await (tx || this.prisma.baseClient).user.create({
-  //     data: {
-  //       id: data.id,
-  //       name: data.name,
-  //       email: data.email,
-  //       password: data.password,
-  //       role: data.role,
-  //     },
-  //   });
-  //   return this.toDomain(record);
-  // }
+  async save(user: User, tx?: Prisma.TransactionClient): Promise<User> {
+    const data = user.toPrimitives();
+    const record = await (tx || this.prisma.baseClient).user.create({
+      data: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: data.role,
+      },
+    });
+    return this.toDomain(record);
+  }
 
-  
-async save(user: User, tx?: Prisma.TransactionClient): Promise<User> {
-  const data = user.toPrimitives();
-  const client = tx || this.prisma.baseClient;
 
-  const record = await client.user.upsert({
-    where: { id: data.id || '' },
-    update: {
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      password: data.password,
-    },
-    create: {
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      role: data.role,
-    },
-  });
-  return this.toDomain(record);
-}
+// async save(user: User, tx?: Prisma.TransactionClient): Promise<User> {
+//   const data = user.toPrimitives();
+//   const client = tx || this.prisma.baseClient;
+
+//   const record = await client.user.upsert({
+//     where: { id: data.id || '' },
+//     update: {
+//       name: data.name,
+//       email: data.email,
+//       role: data.role,
+//       password: data.password,
+//     },
+//     create: {
+//       id: data.id,
+//       name: data.name,
+//       email: data.email,
+//       password: data.password,
+//       role: data.role,
+//     },
+//   });
+//   return this.toDomain(record);
+// }
 
   private toDomain(record: any): User {
     return User.create({
@@ -96,29 +88,3 @@ async save(user: User, tx?: Prisma.TransactionClient): Promise<User> {
 
 }
 
-/**
- * // src/user/infrastructure/prisma-user.repository.ts
-
-async save(user: User, tx?: Prisma.TransactionClient): Promise<User> {
-  const data = user.toPrimitives();
-  const client = tx || this.prisma.baseClient;
-
-  const record = await client.user.upsert({
-    where: { id: data.id || '' },
-    update: {
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      password: data.password,
-    },
-    create: {
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      role: data.role,
-    },
-  });
-  return this.toDomain(record);
-}
- */

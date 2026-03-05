@@ -1,4 +1,4 @@
-import { Role } from 'generated/prisma';
+import { Role } from '@prisma/client';
 import { Email } from './value-objects/user-email.vo';
 
 export interface UserProps {

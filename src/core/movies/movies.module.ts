@@ -5,6 +5,7 @@ import { CreateMovieUseCase } from './application/use-case/create-movie.usecase'
 import { REPOSITORY_TOKEN } from 'src/common/constant/repository.config';
 import { MovieController } from './presentation/movie.controller';
 import { FindAllMovieUseCase } from './application/use-case/find-all-movie.usecase';
+import { FindByIdMovieUseCase } from './application/use-case/find-by-id-movie.usecase';
 
 @Module({
   imports: [PrismaModule],
@@ -12,6 +13,7 @@ import { FindAllMovieUseCase } from './application/use-case/find-all-movie.useca
   providers: [
     CreateMovieUseCase,
     FindAllMovieUseCase,
+    FindByIdMovieUseCase,
     {
       provide: REPOSITORY_TOKEN.MOVIE,
       useClass: PrismaMovieRepository,
