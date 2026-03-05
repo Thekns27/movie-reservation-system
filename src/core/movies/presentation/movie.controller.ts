@@ -8,6 +8,8 @@ import { ApiCustomResponse, ApiPaginatedResponse, PaginationMeta } from 'src/com
 import { FindAllMovieUseCase } from '../application/use-case/find-all-movie.usecase';
 import { FindByIdMovieUseCase } from '../application/use-case/find-by-id-movie.usecase';
 import { Movie } from '../domain/entities/movie.entity';
+import { UpdateMovieUseCase } from '../application/use-case/update-movie.usecase';
+import { UpdateMovieDto } from '../application/dtos/update-movie.dto';
 
 @Controller('movies')
 export class MovieController {
@@ -15,6 +17,7 @@ export class MovieController {
     private readonly createMovieUC: CreateMovieUseCase,
     private readonly findAllmovie:FindAllMovieUseCase,
     private readonly findByMovieId: FindByIdMovieUseCase,
+    private readonly updatemovie:UpdateMovieUseCase,
 ) {}
 @Post()
 //   @UseGuards(JwtAuthGuard)
@@ -46,8 +49,12 @@ async create(@Body() dto: CreateMovieDto): Promise<MovieResponseDto> {
     }
 
     @Patch(':id')
-    async update () {
-
+    @ApiOperation({ summary: 'Update Movie by ID' })
+    @ApiCustomResponse(MovieResponseDto)
+    @ApiResponse({ status: 404, description: 'Movie not found' })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
+    async update (@Param('id') id : string,@Body() dto: CreateMovieDto):Promise<Movie> {
+      return this.updatemovie.execute(id,dto)
     }
 
 }

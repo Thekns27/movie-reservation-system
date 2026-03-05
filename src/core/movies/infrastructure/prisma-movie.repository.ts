@@ -5,6 +5,7 @@ import { PrismaService } from 'src/core/infrastructure/prisma/prisma.service';
 import { MovieRepository } from '../domain/repositories/movie.repository';
 import { Movie } from '../domain/entities/movie.entity';
 import { PaginationMeta } from 'src/common/dto/response/response.dto';
+import { UpdateMovieDto } from '../application/dtos/update-movie.dto';
 
 @Injectable()
 export class PrismaMovieRepository implements MovieRepository {
@@ -26,6 +27,8 @@ export class PrismaMovieRepository implements MovieRepository {
     });
     return this.toDomain(record);
   }
+
+
 
   async findById(id: string): Promise<Movie | null> {
     const record = await this.prisma.movie.findUnique({ where: { id } });
